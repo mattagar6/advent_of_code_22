@@ -1,19 +1,5 @@
-use std::{io::{self, BufRead}};
 use std::cmp::{min, max};
 #[macro_use] extern crate scan_fmt;
-
-
-fn read_lines() -> Vec<String> {
-    let stdin = io::stdin();
-    let mut lines = stdin.lock().lines();
-    let mut vec = Vec::new();
-    while let Some(line) = lines.next() {
-        let line = line.unwrap();
-        // println!("{line}");
-        vec.push(line);
-    }
-    vec
-}
 
 fn inside(l1: i32, r1: i32, l2: i32, r2: i32) -> bool {
     (l1 <= l2 && r2 <= r1) || (l2 <= l1 && r1 <= r2) 

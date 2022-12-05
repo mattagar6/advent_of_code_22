@@ -1,15 +1,8 @@
-use std::{io::{self, BufRead}};
+use std::fs;
 
-fn read_lines() -> Vec<String> {
-    let stdin = io::stdin();
-    let mut lines = stdin.lock().lines();
-    let mut vec = Vec::new();
-    while let Some(line) = lines.next() {
-        let line = line.unwrap();
-        // println!("{line}");
-        vec.push(line);
-    }
-    vec
+fn read_lines(filename: &str) -> Vec<String> {
+    let content = fs::read_to_string(filename).expect("Read Input");
+    content.lines().map(|line| { line.to_string() }).collect()
 }
 
 fn part1() {

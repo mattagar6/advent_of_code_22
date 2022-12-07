@@ -27,14 +27,13 @@ fn solve() {
         let line = lines[i].to_string();
         if line.starts_with("$") {
             assert!(cur.ends_with("/"));
-            let tok: Vec<String> = line.split(" ").map(|s| s.to_string()).collect();
-            match tok[1].as_str() {
+            let tok: Vec<&str> = line.split(" ").collect();
+            match tok[1] {
                 "cd" => {
-                    let new_dir = tok[2].to_string();
-                    match new_dir.as_str() {
+                    let new_dir = tok[2];
+                    match new_dir {
                         ".." => {
                             let pos = cur[..cur.len()-1].rfind("/").unwrap();
-                            // println!("HERE: {cur} {pos}");
                             cur = cur[..pos + 1].to_string();
                         }
                         "/" => {
@@ -55,9 +54,9 @@ fn solve() {
                         if lines[j].starts_with("$") {
                             break;
                         }
-                        let entry: Vec<String> = lines[j].split(" ").map(|s| s.to_string()).collect();
-                        let dir_name = cur.to_string() + &entry[1].to_string() + "/";
-                        match entry[0].as_str() {
+                        let entry: Vec<&str> = lines[j].split(" ").collect();
+                        let dir_name = cur.to_string() + entry[1] + "/";
+                        match entry[0] {
                             "dir" => {
                                 child.entry(cur.to_string()).or_default().push(dir_name);
                             }

@@ -5,15 +5,10 @@ fn read_lines(filename: &str) -> Vec<String> {
     content.lines().map(|line| { line.to_string() }).collect()
 }
 
-fn part1() {
-
-}
-
-fn part2() {
+fn solve() {
     
 }
 
 fn main() {
-    // part1();
-    // part2();
+    solve();
 }

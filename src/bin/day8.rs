@@ -1,5 +1,4 @@
 use std::fs;
-use std::cmp::max;
 
 fn read_lines(filename: &str) -> Vec<String> {
     let content = fs::read_to_string(filename).expect("Read Input");
@@ -41,13 +40,10 @@ fn solve() {
         return ans;
     }
 
-    let mut ans = 0;
-    for i in 0..grid.len() {
-        for j in 0..grid[i].len() {
-            ans = max(ans, get_score(&grid, i, j));
-        }
-    }
-    println!("ans = {ans}");
+    let ans = grid.iter().enumerate().map(|(i, row)|
+                    row.iter().enumerate().map(|(j, _)| get_score(&grid, i, j)).max().unwrap())
+                    .max().unwrap();
+    println!("ans = {}", ans);
 }
 
 fn main() {

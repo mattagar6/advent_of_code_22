@@ -6,10 +6,10 @@ fn read_lines(filename: &str) -> Vec<String> {
 }
 
 fn solve() {
-    let mut grid: Vec<Vec<i32>> = Vec::new();
-    for line in read_lines("day8.in") {
-        grid.push(line.chars().map(|x| { x as i32 - '0' as i32}).collect());
-    }
+    let grid: Vec<Vec<i32>> = read_lines("day8.in")
+        .into_iter()
+        .map(|x| x.chars().map(|ch| ch as i32 - '0' as i32).collect())
+        .collect();
 
     fn get_score(grid: &Vec<Vec<i32>>, i: usize, j: usize) -> u64 {
         let mut ans = 1;

@@ -23,10 +23,7 @@ fn find_last(s: &Vec<char>, b: usize) -> usize {
     }
 }
 
-// 0 -> s smaller
-// 1 -> same
-// 2 -> s bigger
-fn rec(s: &Vec<char>, b: usize, e: usize, t: &Vec<char>, l: usize, r: usize) -> i32 {
+fn rec(s: &Vec<char>, b: usize, e: usize, t: &Vec<char>, l: usize, r: usize) -> Ordering {
 
 
     if b < e && s[b] == ',' {
@@ -38,11 +35,11 @@ fn rec(s: &Vec<char>, b: usize, e: usize, t: &Vec<char>, l: usize, r: usize) -> 
     }
 
     if b >= e {
-        return if l >= r {1} else {0};
+        return if l >= r {Ordering::Equal} else {Ordering::Less};
     }
 
     if l >= r {
-        return 2;
+        return Ordering::Greater;
     }
     assert!(s[b] != ']');
     assert!(t[l] != ']');
@@ -51,7 +48,7 @@ fn rec(s: &Vec<char>, b: usize, e: usize, t: &Vec<char>, l: usize, r: usize) -> 
         let ee = find_last(s, b);
         let rr = find_last(t, l);
         let res = rec(s, b + 1, ee, t, l + 1, rr);
-        if res != 1 {
+        if res != Ordering::Equal {
             return res;
         }
         return rec(s, ee + 1, e, t, rr + 1, r);
@@ -60,7 +57,7 @@ fn rec(s: &Vec<char>, b: usize, e: usize, t: &Vec<char>, l: usize, r: usize) -> 
     if s[b] == '[' {
         let ee = find_last(s, b);
         let res = rec(s, b + 1, ee, t, l, l + 1); // t becomes single element list
-        if res != 1 {
+        if res != Ordering::Equal {
             return res;
         }
         return rec(s, ee + 1, e, t, l + 1, r);
@@ -69,7 +66,7 @@ fn rec(s: &Vec<char>, b: usize, e: usize, t: &Vec<char>, l: usize, r: usize) -> 
     if t[l] == '[' {
         let rr = find_last(t, l);
         let res = rec(s, b, b+1, t, l + 1, rr);
-        if res != 1 {
+        if res != Ordering::Equal {
             return res;
         }
         return rec(s, b+1, e, t, rr + 1, r);
@@ -79,7 +76,7 @@ fn rec(s: &Vec<char>, b: usize, e: usize, t: &Vec<char>, l: usize, r: usize) -> 
         return rec(s, b+1, e, t, l+1, r);
     }
 
-    return if s[b] < t[l] {0} else {2};
+    return if s[b] < t[l] {Ordering::Less} else {Ordering::Greater};
 }
 
 fn solve() {
@@ -98,11 +95,7 @@ fn solve() {
     let mut packets: Vec<Vec<char>> = raw_input.split("\n").map(|line| { line.to_string().chars().collect() }).collect();
     
     packets.sort_by(|a,b| {
-        match rec(&a, 0, a.len(), &b, 0, b.len()) {
-            0 => Ordering::Less,
-            1 => Ordering::Equal,
-            _ => Ordering::Greater
-        }
+        rec(&a, 0, a.len(), &b, 0, b.len())
     });
 
     let lines: Vec<String> = packets.into_iter().map(|s| s.into_iter().collect()).collect();

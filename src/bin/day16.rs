@@ -7,7 +7,6 @@ fn main() {
 
     let mut flow: HashMap<usize, i32> = Default::default();
     let mut adj: HashMap<usize, Vec<String>> = Default::default();
-    let mut spec: Vec<String> = Default::default();
     let mut id: HashMap<String, usize> = Default::default();
     let mut spec_id: HashMap<usize, usize> = Default::default();
 
@@ -17,17 +16,15 @@ fn main() {
             adj.entry(id.len()).or_default().push(u.to_string());
         }
         if rate > 0 {
-            spec_id.insert(id.len(), spec.len());
-            spec.push(v.to_owned());
+            spec_id.insert(id.len(), spec_id.len());
         }
         id.insert(v.to_owned(), id.len());
 
     }
 
-    spec_id.insert(*id.get("AA").unwrap(), spec.len());
-    spec.push("AA".to_string());
+    spec_id.insert(*id.get("AA").unwrap(), spec_id.len());
 
-    let n = spec.len();
+    let n = spec_id.len();
     let tim = (26-1)*2;
 
     let mut dp = vec![vec![vec![i32::MIN; id.len()]; 1 << n]; tim + 1];
